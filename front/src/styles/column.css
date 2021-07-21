@@ -1,0 +1,8 @@
+.columnTask{
+    min-height: 100px;
+    border: 2px solid rgb(12, 12, 12);
+    margin : 70px;
+    padding: 40px;
+    background-color: #fdfdfd;
+    flex-grow: 1;
+}

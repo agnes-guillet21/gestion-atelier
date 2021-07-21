@@ -1,0 +1,160 @@
+import React, { useState, useEffect } from 'react';
+import Axios from 'axios';
+import Column from './Column';
+import { DragDropContext } from 'react-beautiful-dnd';
+import '../../styles/tasks.css';
+import Data from './initialeData';
+function DragDrop(){
+
+
+    const [datas , setDatas] =  useState(null);
+    const [idTask, setIdTask] = useState();
+    const [dataCol, setDataCol] = useState(null);
+    useEffect(() => {
+        if (dataCol == null) {
+            Axios(
+                "http://localhost:9000/statut/liste",
+                {
+                    method:'GET',
+                    withCredentials : true,
+                }
+            ).then((result) => {
+                setDataCol(result.data);
+                   
+            }).catch(error => {
+                console.log(error);
+            }); 
+        }
+    }); 
+
+    useEffect(() => { // parce que useEffect
+        (async () => { // creation fonction async pour aller chercher les infos.
+            setDatas(await Data()); // pour aller chercher toutes les infos.
+        })() // le () : pour appeler cette fonction directement.
+    }, []) // pour n'appeler qu'au premier rendu
+  ;
+
+    const onDragEnd = (result) => {
+        const {source, destination, draggableId} = result;
+        const start =  result.source.droppableId;
+        const end = result.destination.droppableId; 
+        console.log("depart de ",start);
+        console.log ("from" , source);
+        console.log("to", destination);
+
+        if (!destination) {
+            return;
+        }
+        if (destination.droppableId === source.droppableId && destination.index === source.index) {
+            return;
+        }
+        if (start === end) {
+            
+            let taskDraggable = 0;
+             //recupere ds la liste des taches  l'id de la tache. 
+             datas.forEach(element => {
+                if(element.id === draggableId){
+                    taskDraggable = element;
+                }
+            });
+
+            const itemTask = Array.from(datas.idStatut);
+            console.log("tab d'objet de taskLits", itemTask);
+
+            taskDraggable = itemTask.splice(result.source.index, 1)[0];
+            console.log("Objet task qu on drag", taskDraggable);
+
+            itemTask.splice(result.destination.index, 0, taskDraggable);
+            console.log("index nouveaux des tasks ", itemTask);
+        
+
+
+            setDatas(itemTask);
+            console.log("this is the end");
+            return;
+        } else {
+/*
+                const startTaskIds = Array.from(start.taskDraggable);
+                startTaskIds.splice(source.index, 1);
+                //mettre a jour la colonne avc les taches dedans 
+                const newStart = {
+                    ...start,
+                   taskList: startTaskIds
+                };
+                const finishTaskIds = Array.from(end.taskDraggable);
+                finishTaskIds.splice(destination.index, 0, draggableId);
+                //mettre a jour la colonne qui a receptionnée la nvlle task
+                const newFinish = {
+                    ...end,
+                    taskList: finishTaskIds
+                };
+                //mettre a jour l id statut de la tache et l'envoyer en back
+                taskList.forEach(function (item, index) {
+                    if(item.idStatut !== destination.droppableId) {
+                        item.idStatut = destination.droppableId;
+                        onDragUpdate(item);
+                    }
+                });
+                const onDragUpdate = (idTask, idStatut) => {
+                    if(!idStatut.destination){
+                        Axios("http://localhost:9000/task/modificationTask/"+ idTask,
+                        {
+                            method:'PUT',
+                            withCredentials : true,
+                            data: JSON.stringify({
+                                idTask: taskList.id ,
+                                idStatut: taskList.idStatut ,
+                            }),
+                            headers : {
+                                'Content-type': 'application/json' 
+                            }
+                        }
+                        ).then((result) => {
+                        // mise a jour du state avc le result
+                    
+                        }).catch(error => {
+                        console.log(error);
+                        });
+                        return;
+                    }
+                }
+                
+                //taskList.idStatut== destination.droppableId
+                //mise a jour du state
+                const newState = {
+                    ...taskList,
+                    statut: {
+                        ...dataCol.id,
+                        [newStart.id]: newStart,
+                        [newFinish.id]: newFinish
+                    }
+                };
+            setTaskList(newState);
+            return;
+           
+          si l id statut de la tache correspond a l id dela colonne  terminée alors on ne fait pas apparaitre la tache
+          if(idStatut ==  droppableId){
+          }
+          */
+        }
+    }   
+    //------------------------------------
+    return (
+        <div className="tasks">
+               <DragDropContext onDragEnd={onDragEnd}>
+               
+                {dataCol == null ? null :
+                dataCol.map((item, index) =>{
+                    const dataTmp = datas == null ? null : datas.filter((element ) => { 
+                        return element.idStatut === item.id 
+                    }) ;
+                    //que je fasse un truc pr recuperer les id statuts 
+                    return (
+                        <Column key={index} statut={item.id} dataTask={dataTmp} libelle={item.libelle}/>
+                    )
+                })}  
+            </DragDropContext>
+        </div> 
+    );
+}
+export default DragDrop;

@@ -1,0 +1,45 @@
+const columns = [
+  {
+    title: {statut.name},
+    dataIndex: '{statut.id}'
+  },
+//mapper sur ca pr avoir tt les colonnes
+
+
+// ex fake data generator
+const getItems = (count, offset = 0) =>
+    Array.from({ length: count }, (v, k) => k).map(k => ({
+        id: `item-${k + offset}`,
+        content: `item ${k + offset}`
+    }));
+
+        state = {
+        items: getItems(10),
+        selected: getItems(1, 19),
+        anotherItem: getItems(5, 29)
+    };
+
+    /**
+     * A semi-generic way to handle multiple lists. Matches
+     * the IDs of the droppable container to the names of the
+     * source arrays stored in the state.
+     */
+    id2List = {
+        droppable: 'items',
+        droppable2: 'selected',
+        droppable3: 'anotherItem'
+    };
+
+    
+addColumn = _title => {
+    const title = _title.trim();
+    if (!title) return;
+    const newColumn = {
+      id: _.random(100),
+      title,
+      tasks: []
+    };
+    this.setState(state => ({
+      columns: [...state.columns, newColumn]
+    }));
+  };

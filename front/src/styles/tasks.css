@@ -1,0 +1,13 @@
+.tasks{
+    margin: 7%;
+    margin-top: 70px;
+    display: flex;
+    min-height: 100px;
+    flex-direction: rows;
+    border: 1px solid rgb(12, 12, 12);
+    border-radius: 5px;
+
+    background-color: #b9bdbb3b;
+    box-shadow:0 0 5px rgba(14, 13, 13, 0.05);
+    overflow:scroll;
+}

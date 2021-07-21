@@ -1,0 +1,99 @@
+
+-----------------------------------------------------------------------------
+// fction pr uploader des datas d un autre composant 
+
+ const uploadListTask =(result) => {
+      const aux = taskTrello;
+      aux.push(result);
+      setTaskTrello(result);
+  }
+ on la passe en props 
+  changeData={uploadListTask}
+
+use effect 
+   useEffect(() => {
+        // faire un seul if pr verifier le premier
+        if ( taskList == null)  { 
+            Axios("http://localhost:9000/task/listTrello/"+ props.statut,
+                {
+                    method:'GET',
+                    withCredentials : true,
+                }
+            ).then((result) => {
+                setTaskList(result.data);
+                //props.changeData(result.data);
+            }); 
+        }
+    },[ taskList, setTaskList,props.idTask, props]);
+
+
+  -----------------------------------------------------------------------------
+  import Data from './initialeData';
+ use effect ds le fichier initialeData
+
+    const [datas , setDatas] =  useState(null);
+      useEffect(() => { // parce que useEffect
+        (async () => { // creation fonction async pour aller chercher les infos.
+            setDatas(await Data()); // pour aller chercher toutes les infos.
+        })() // le () : pour appeler cette fonction directement.
+    }, []) // pour n'appeler qu'au premier rendu
+  ;
+
+  -----------------------------------------------------------------------------
+
+
+   /*
+            let newIndexTask;
+            for(let i = 0 ; i < taskList.length ; i++) {
+                if (source.index !== destination.index){
+                    newIndexTask= taskList[destination.index[i]];
+                    setTaskList(newIndexTask);
+                    return;
+                }
+            }
+        */
+
+-----------------------------------------------------------------------------
+        const arrayTask = () =>{
+       if (datas.idStatut ==  dataCol.id) {
+            taskByIS.push(datas.idStatut);
+            console.log(taskByIS);
+        }
+    }
+
+-----------------------------------------------------------------------------
+ /*
+    const onIdStatutChange = (idStatut) => {
+
+        Axios("htp://localhost:9000/task/modification/" + idStatut, 
+            {
+            method: 'put',
+            headers: {}
+            data: JSON.stringify({
+                idStatut : item.idStatut,
+            }),
+        })
+            .then(response => {
+                    if (response.status >= 200 && response.status <= 299) {
+                        return response.json();
+                    }
+                }
+            )
+            .then(result => {
+           //mise a jour du state
+            }).catch(error => {
+                
+                console.error(error)
+            }
+        )
+    }
+*/
+----------------------------------------------------------------------------
+
+//recupere ds la liste des taches  l id de la tache. 
+            /* taskList.forEach(element => {
+                if(element.id === draggableId){
+                    taskDraggable = element;
+                }
+            });
+            */

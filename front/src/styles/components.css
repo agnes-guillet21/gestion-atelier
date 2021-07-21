@@ -1,0 +1,57 @@
+.conteneur{
+   
+    min-height: 100vh;
+
+}
+.components{
+    display: flex;
+    flex-direction: row;
+}
+
+/* liste fournisseur*/
+.p{
+text-align: center;
+padding: 2%;
+border: 1px solid rgb(12, 12, 12);
+}
+
+.tabComponents{
+    background-color: white;
+    padding:20px ;
+    margin:20px 40px;
+    margin-left: 80px;
+    border-radius: 5px;
+    }
+
+.thForm{
+    padding-bottom:5px;
+}
+
+.thNom{
+    padding-bottom:5px; 
+}
+
+.tdForm{
+    padding:5px;
+}
+.button{
+    margin: auto;
+    padding: 2%;
+}
+
+/* AjoutFournisseur*/
+.formComponents{
+    background-color:white;
+    padding :30px;
+	height:100px;
+    border-radius: 5px;
+    margin: 20px 20px;   
+    display: block;
+	width: 150px;
+	float: left;
+}
+
+
+ .buttonForm{
+     margin: 10px ;
+ }   
